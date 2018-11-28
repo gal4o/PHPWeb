@@ -2,14 +2,31 @@
 
 {% block main %}
     <div class="container body-content">
+        <a href="{{ path('user_register') }}">Create new user</a><br><br>
+        <div class="row">
+            <div class="col-md-6">
         {% if app.user %}
+            <table border="solid black">
+                <tr>
+                    <th>Id</th>
+                    <th>Full name</th>
+                    <th>Sum</th>
+                    <th>Profile</th>
+                    <th colspan="2">Functions</th>
+                </tr>
             {% for user in users %}
-                <div>
-                        <p>
-                            <h2>{{ user.fullName }}</h2>
-                        </p>
-                </div>
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.fullName }}</td>
+                    <td>Sum</td>
+                    <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':user.id}) }}">View</a></td>
+                    <td><a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':user.id}) }}">Edit</a></td>
+                    <td><a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':user.id}) }}">Delete</a></td>
+                </tr>
             {% endfor %}
+            </table>
+            </div>
+        </div>
         {% else %}
         <div class="row">
             <div class="col-md-6">

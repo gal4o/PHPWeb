@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+    <h1>It is {{ user.fullName }} profile!</h1>
+    <a class="btn btn-default btn-xs" href="{{ path('homepage') }}">Home</a>
+    <a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':user.id}) }}">Edit</a>
+    <a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':user.id}) }}">Delete</a>
+
+{% endblock %}
+

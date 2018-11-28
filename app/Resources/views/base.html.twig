@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>{% block title %}Blog{% endblock %}</title>
+    <title>{% block title %}DentalClinic{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
@@ -35,16 +35,16 @@
                                     {#My Articles#}
                                 {#</a>#}
                             {#</li>#}
-                            {#<li>#}
-                                {#<a href="{{ path('article_create') }}">#}
-                                    {#Create Article#}
-                                {#</a>#}
-                            {#</li>#}
-                            {#<li>#}
-                                {#<a href="{{ path('user_profile') }}">#}
-                                    {#My Profile#}
-                                {#</a>#}
-                            {#</li>#}
+                            <li>
+                                <a href="{{ path('user_register') }}">
+                                    Register New User
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('user_profile',{id:app.user.id})}}">
+                                    My Profile
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ path('security_logout') }}">
                                     Logout
