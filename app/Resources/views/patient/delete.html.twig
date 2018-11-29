@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('patient_delete', {id:patient.id}) }}" method="POST">
+                <fieldset>
+                    <legend>Delete Patient</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="patient_fullName">Full Name</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="patient_fullName"
+                                   placeholder="Patient Full Name" name="patient[fullName]"
+                                   value="{{ patient.fullName }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="phone">Phone</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="patient_phone"
+                                   placeholder="Patient Phone" name="patient[phone]"
+                                   value="{{ patient.phone }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="patient_note">Content</label>
+                        <div class="col-sm-6">
+                        <textarea class="form-control" rows="6" id="patient_note"
+                                  name="patient[note]" disabled>{{ patient.note }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="patient_photo" disabled="">Photo</label>
+                        <div class="col-sm-4 ">
+                            <input type="file" accept=".jpg, .png" class="form-control" id="patient_photo"
+                                   placeholder="Patient Photo" name="patient[photo]" disabled>
+                        </div>
+                    </div>
+
+                    {{ form_row(form._token) }}
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('patient_index') }}">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

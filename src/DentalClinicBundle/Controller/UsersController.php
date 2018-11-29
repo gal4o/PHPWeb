@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UsersController extends Controller
 {
     /**
-     * @Route("/register", name="user_register")
+     * @Route("/user/register", name="user_register")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse| \Symfony\Component\HttpFoundation\Response
      */
@@ -84,6 +84,11 @@ class UsersController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted()&&$form->isValid())
         {
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $user->getPassword());
+
+            $user->setPassword($password);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -129,4 +134,5 @@ class UsersController extends Controller
             array('user' => $user,
                 'form' => $form->createView()));
     }
+
 }

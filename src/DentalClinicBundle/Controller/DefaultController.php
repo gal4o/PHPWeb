@@ -16,7 +16,7 @@ class DefaultController extends Controller
     {
         $users = $this->getDoctrine()
             ->getRepository(User::class)
-            ->findAll();
+            ->findBy([],['fullName' => 'ASC']);
         return $this->render('default/index.html.twig', ['users' => $users]);
     }
 }

@@ -30,11 +30,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if app.user %}
-                            {#<li>#}
-                                {#<a href="{{ path( 'myArticles') }}">#}
-                                    {#My Articles#}
-                                {#</a>#}
-                            {#</li>#}
+                            <li>
+                                <a href="{{ path( 'patient_index') }}">
+                                    View Patients
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ path('user_register') }}">
                                     Register New User

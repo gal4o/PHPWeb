@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block main %}
-    <h1>It is {{ user.fullName }} profile!</h1>
-    <a class="btn btn-default btn-xs" href="{{ path('homepage') }}">Home</a>
-    <a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':user.id}) }}">Edit</a>
-    <a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':user.id}) }}">Delete</a>
+    <div class="container body-content">
+        <div class="row">
+            <header>
+                <h1>It is {{ user.fullName }} profile!</h1>
+            </header>
 
+            <footer>
+                <a class="btn btn-default btn-xs" href="{{ path('homepage') }}">Home</a>
+                <a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':user.id}) }}">Edit</a>
+                <a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':user.id}) }}">Delete</a>
+            </footer>
+        </div>
+    </div>
 {% endblock %}
 

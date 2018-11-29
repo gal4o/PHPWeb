@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id %}
+
+{% endblock %}
+
+{% block main %}
+<div class="container body-content">
+    <div class="row">
+        <header>
+            <h1>It is <strong>{{ patient.fullName }}</strong> profile</h1>
+        </header>
+
+        <div class="col-md-6">
+            <strong>Patient is added on:</strong> {{ patient.dateAdded.format('d/m/Y') }}<br>
+            <strong>Patient phone:</strong> {{ patient.phone }}<br>
+            <strong>Notes:</strong> {{ patient.note }}<br>
+        </div>
+
+        <div class="col-md-6">
+            {% if patient.photo!=null %}
+            <img src="{{ asset('uploads/' ~ patient.photo) }}" width="300" height="200">
+            {% else %}
+            <p>No photo</p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-12">
+            <strong>Manipulations:</strong><br>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>note</th>
+                <th>price</th>
+                <th>Add note</th>
+            </tr>
+            </thead>
+        {% for manipulation in patient.manipulations %}
+            <tr>
+                <td>{{ manipulation.date }}</td>
+                <td>{{ manipulation.title }}</td>
+                <td>{{ manipulation.note }}</td>
+                <td>{{ manipulation.price }}</td>
+                <td><a class="btn btn-default btn-xs" href="{{ path('',{'id':manipulation.id}) }}">Add note</a></td>
+
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+
+    <footer>
+    <a class="btn btn-default btn-xs" href="{{ path('patient_index') }}">Home</a>
+    <a class="btn btn-success btn-xs" href="{{ path('patient_edit',{'id':patient.id}) }}">Edit</a>
+    <a class="btn btn-danger btn-xs" href="{{ path('patient_delete',{'id':patient.id}) }}">Delete</a>
+    {#<a class="btn btn-success btn-xs" href="{{ path('patient_addManipulation',{'id':user.id}) }}">Add manipulation</a>#}
+    </footer>
+
+    </div>
+</div>
+{% endblock %}
+
+
+
