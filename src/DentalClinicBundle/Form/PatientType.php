@@ -21,7 +21,8 @@ class PatientType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'DentalClinicBundle\Entity\Patient'));
+        $resolver->setDefaults(array('data_class' =>
+            'DentalClinicBundle\Entity\Patient'));
     }
 //
 //    public function getBlockPrefix()

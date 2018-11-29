@@ -29,17 +29,22 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{{ path( 'tariff_index') }}">
+                                View Tariffs
+                            </a>
+                        </li>
                         {% if app.user %}
                             <li>
                                 <a href="{{ path( 'patient_index') }}">
                                     View Patients
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ path('user_register') }}">
-                                    Register New User
-                                </a>
-                            </li>
+                            {#<li>#}
+                                {#<a href="{{ path('user_register') }}">#}
+                                    {#Register New User#}
+                                {#</a>#}
+                            {#</li>#}
                             <li>
                                 <a href="{{ path('user_profile',{id:app.user.id})}}">
                                     My Profile

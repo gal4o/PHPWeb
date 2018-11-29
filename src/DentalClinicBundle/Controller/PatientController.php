@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
@@ -63,12 +62,13 @@ class PatientController extends Controller
             return $this->redirectToRoute("patient_index");
         }
 
-        return $this->render('patient/create',
+        return $this->render('patient/create.html.twig',
             array('form' => $form->createView()));
     }
 
     /**
      * @Route("/patient/profile/{id}", name="patient_profile")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -82,6 +82,7 @@ class PatientController extends Controller
 
     /**
      * @Route("/patient/edit/{id}", name="patient_edit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -119,6 +120,7 @@ class PatientController extends Controller
 
     /**
      * @Route("patient/delete/{id}", name="patient_delete")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -144,4 +146,5 @@ class PatientController extends Controller
             array('patient' => $patient,
                 'form' => $form->createView()));
     }
+
 }

@@ -13,6 +13,7 @@ class UsersController extends Controller
 {
     /**
      * @Route("/user/register", name="user_register")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse| \Symfony\Component\HttpFoundation\Response
      */
