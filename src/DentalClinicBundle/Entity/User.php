@@ -2,6 +2,7 @@
 
 namespace DentalClinicBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -43,6 +44,17 @@ class User implements UserInterface
      */
     private $fullName;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="DentalClinicBundle\Entity\Visit", mappedBy="dentist")
+     */
+    private $visits;
+
+    public function __construct()
+    {
+        $this->visits = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -124,6 +136,25 @@ class User implements UserInterface
     public function getFullName()
     {
         return $this->fullName;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    /**
+     * @param Visit $visit
+     *
+     * @return User
+     */
+    public function addVisit(Visit $visit)
+    {
+        $this->visits[] = $visit;
+        return $this;
     }
 
     /**

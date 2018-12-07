@@ -24,28 +24,39 @@
             <p>No photo</p>
             {% endif %}
         </div>
+        <td><a class="btn btn-default btn-xs" href="{{ path('visit_create',{'id':patient.id}) }}">Add visit</a></td>
 
         <div class="col-md-12">
             <strong>Manipulations:</strong><br>
         <table class="table table-bordered">
             <thead>
             <tr>
+                <th>No</th>
                 <th>Date</th>
-                <th>Title</th>
+                <th>Treatments</th>
                 <th>note</th>
                 <th>price</th>
+                <th>Dentist</th>
                 <th>Add note</th>
             </tr>
             </thead>
-        {% for manipulation in patient.manipulations %}
+        {% for manipulation in visits %}
             <tr>
-                <td>{{ manipulation.date }}</td>
-                <td>{{ manipulation.title }}</td>
+                <td>{{ manipulation.id }}</td>
+                <td>{{ manipulation.date|date("d.m.Y g:ia") }}</td>
+                <td>{{ manipulation.Manipulations|join(",") }}</td>
                 <td>{{ manipulation.note }}</td>
-                <td>{{ manipulation.price }}</td>
-                <td><a class="btn btn-default btn-xs" href="{{ path('',{'id':manipulation.id}) }}">Add note</a></td>
-
+                <td>{% for treatment in manipulation.Manipulations %}
+                        {#TODO: if is last#}
+                    {{ treatment.price }},
+                {% endfor %}</td>
+                <td>{{ manipulation.dentist.FullName }}</td>
+                <td><a href="{{ path('visit_edit', {'id':manipulation.id}) }}">Add note</a> </td>
             </tr>
+        {% else %}
+            <p>
+                No visits
+            </p>
         {% endfor %}
         </table>
         </div>

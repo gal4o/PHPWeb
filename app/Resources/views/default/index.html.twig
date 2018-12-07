@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ oneUser.id }}</td>
                     <td>{{ oneUser.fullName }}</td>
-                    <td>Sum</td>
+                    <td>{{ oneUser.visits.get('prise')|join(',') }}</td>
                     <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':oneUser.id}) }}">View</a></td>
                     <td><a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':oneUser.id}) }}">Edit</a></td>
                     <td><a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':oneUser.id}) }}">Delete</a></td>

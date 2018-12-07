@@ -3,6 +3,7 @@
 namespace DentalClinicBundle\Controller;
 
 use DentalClinicBundle\Entity\Patient;
+use DentalClinicBundle\Entity\Visit;
 use DentalClinicBundle\Form\PatientType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -77,7 +78,11 @@ class PatientController extends Controller
         $patient = $this->getDoctrine()
             ->getRepository(Patient::class)
             ->find($id);
-        return $this->render('patient/profile.html.twig', ['patient' => $patient]);
+        $visits = $this->getDoctrine()
+            ->getRepository(Visit::class)
+            ->findBy(['patient' => $patient],['date' => 'desc']);
+
+        return $this->render('patient/profile.html.twig', ['patient' => $patient, 'visits' => $visits]);
     }
 
     /**

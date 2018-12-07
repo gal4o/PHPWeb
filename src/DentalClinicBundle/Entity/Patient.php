@@ -60,8 +60,10 @@ class Patient
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="DentalClinicBundle\Entity\Visit", mappedBy="patient")
+     *
      */
-    private $manipulations;
+    private $visits;
 
     /**
      * Patient constructor.
@@ -70,26 +72,26 @@ class Patient
     public function __construct()
     {
         $this->dateAdded = new \DateTime('now');
-        $this->manipulations = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
 
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getManipulations()
+    public function getVisits()
     {
-        return $this->manipulations;
+        return $this->visits;
     }
 
-//    /**
-//     * @param \DentalClinicBundle\Entity\Manipulation $manipulation
-//     * @return Patient
-//     */
-//    public function addManipulation(Manipulation $manipulation)
-//    {
-//        $this->manipulations[] = $manipulation;
-//        return $this;
-//    }
+    /**
+     * @param \DentalClinicBundle\Entity\Visit $visit
+     * @return Patient
+     */
+    public function addVisit(Visit $visit)
+    {
+        $this->visits[] = $visit;
+        return $this;
+    }
 
     /**
      * Get id

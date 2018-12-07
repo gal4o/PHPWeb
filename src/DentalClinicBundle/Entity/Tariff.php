@@ -2,6 +2,7 @@
 
 namespace DentalClinicBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,12 +30,45 @@ class Tariff
     private $treatment;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="price", type="float")
+     * @ORM\Column(name="price", type="decimal", scale=2)
      */
     private $price;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="DentalClinicBundle\Entity\Visit", mappedBy="manipulations")
+     */
+    private $visits;
+
+    public function __construct()
+    {
+        $this->visits = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTreatment();
+    }
+
+    /**
+     * @return Visit[]|ArrayCollection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    /**
+     * @param Visit $visit
+     *
+     * @return Tariff
+     */
+    public function setVisits(Visit $visit)
+    {
+        $this->visits[] = $visit;
+        return $this;
+    }
 
     /**
      * Get id

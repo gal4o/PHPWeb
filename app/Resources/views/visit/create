@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('visit_create', {'id':patient.id}) }}" method="POST">
+                <fieldset>
+                    <legend>New Visit</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="visit_note">Note</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="visit_note"
+                                   placeholder="Visit Note" name="visit[note]" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="visit_manipulation">Treatment</label>
+                        <div class="col-sm-4 ">
+                            <select name="treatment">
+                                <option></option>
+                                {% for manipulation in tariff %}
+                                    <option>{{ manipulation.treatment }}</option>
+                                {% endfor %} }}
+                            </select>
+                            {#<select name="treatment">#}
+                                {#<option></option>#}
+                                {#{% for manipulation in tariff %}#}
+                                    {#<option>{{ manipulation.treatment }}</option>#}
+                                {#{% endfor %} }}#}
+                            {#</select>#}
+                        </div>
+                    </div>
+
+                    {{ form_row(form._token) }}
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('patient_profile', {'id':patient.id}) }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
