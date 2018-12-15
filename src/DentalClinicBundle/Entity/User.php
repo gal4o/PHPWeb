@@ -45,6 +45,13 @@ class User implements UserInterface
     private $fullName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="DentalClinicBundle\Entity\Visit", mappedBy="dentist")
@@ -136,6 +143,30 @@ class User implements UserInterface
     public function getFullName()
     {
         return $this->fullName;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return User
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
     }
 
     /**

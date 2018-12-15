@@ -8,13 +8,50 @@
     <div class="container body-content">
         <div class="row">
             <header>
-                <h1>It is {{ user.fullName }} profile!</h1>
+                <h1>It is {{ user.fullName }} profile! Earnings:{{ sum }}</h1>
             </header>
+            <div class="col-md-6">
+                {% if user.photo!=null %}
+                    <img src="{{ asset('uploads/users/' ~ user.photo) }}" width="300" height="200">
+                {% else %}
+                    <p>No photo</p>
+                {% endif %}
+            </div>
+
+            <hr>
+            <form method="post">
+                From: &nbsp; <input type="date" name="start">  &nbsp;&nbsp; To: &nbsp; <input type="date" name="end">&nbsp;&nbsp;
+                <input type="submit">
+            </form>
+<hr>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Treatments</th>
+                    <th>note</th>
+                    <th>Patient</th>
+                    <th>Patient profile</th>
+                </tr>
+                </thead>
+                {% for manipulation in visits %}
+                    <tr>
+                        <td>{{ manipulation.id }}</td>
+                        <td>{{ manipulation.date|date("d.m.Y g:ia") }}</td>
+                        <td>{{ manipulation.Manipulations|join(",") }}</td>
+                        <td>{{ manipulation.note }}</td>
+                        <td>{{ manipulation.patient.FullName }}</td>
+                        <td><a href="{{ path('patient_profile', {'id':manipulation.patient.id}) }}">Patient profile</a></td>
+                    </tr>
+                {% else %}
+                    <p>
+                        No visits
+                    </p>
+                {% endfor %}
+            </table>
 
             <footer>
-                <a class="btn btn-default btn-xs" href="{{ path('homepage') }}">Home</a>
-                <a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':user.id}) }}">Edit</a>
-                <a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':user.id}) }}">Delete</a>
             </footer>
         </div>
     </div>

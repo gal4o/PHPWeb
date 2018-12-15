@@ -55,6 +55,7 @@ class Visit
 
     /**
      *
+     * @var Tariff[]
      * @ORM\ManyToMany(targetEntity="DentalClinicBundle\Entity\Tariff", inversedBy="visits")
      * @ORM\JoinTable(name="manipulations")
      */
@@ -78,10 +79,11 @@ class Visit
      * @param Tariff $manipulation
      * @return Visit
      */
-    public function addManipulations($manipulation)
+    public function addManipulations(Tariff $manipulation)
     {
 //        $manipulation->setVisits($this);
         $this->manipulations[] = $manipulation;
+//        $manipulation->setVisits($this);
         return $this;
     }
 

@@ -28,13 +28,26 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <ul class="pagination">
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                </ul>
+                {% if maxPages > 1 %}
+                    <ul class="pagination pagination-sm">
+                        {# `«` arrow  #}
+                        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                            <a href="{{ path('patient_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                        </li>
+
+                        {# Render each page number #}
+                        {% for i in 1..maxPages %}
+                            <li {{ thisPage == i ? 'class="active"' }}>
+                                <a href="{{ path('patient_index', {page: i}) }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {# `»` arrow #}
+                        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                            <a href="{{ path('patient_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
         {% else %}

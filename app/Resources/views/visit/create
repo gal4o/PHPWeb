@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_manipulation">Treatment</label>
                         <div class="col-sm-4 ">
-                            <select name="treatment">
+                            <select multiple name="treatment">
                                 <option></option>
                                 {% for manipulation in tariff %}
                                     <option>{{ manipulation.treatment }}</option>

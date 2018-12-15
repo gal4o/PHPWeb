@@ -7,7 +7,9 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    patients_images_directory: '%kernel.project_dir%/web/uploads/patients/'
     images_directory: '%kernel.project_dir%/web/uploads/'
+    users_images_directory: '%kernel.project_dir%/web/uploads/users/'
 
 framework:
     #esi: ~

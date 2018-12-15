@@ -2,7 +2,9 @@
 
 namespace DentalClinicBundle\Repository;
 
+use DentalClinicBundle\Entity\User;
 use DentalClinicBundle\Entity\Visit;
+
 
 /**
  * UserRepository

@@ -16,19 +16,25 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class PatientController extends Controller
 {
     /**
-     * @Route("/patient/index", name="patient_index")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $page
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/patient/index{page}", name="patient_index")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function viewPatientsAction()
+    public function viewPatientsAction($page = 1)
     {
+        $limit = 5;
+        $thisPage = $page;
+
         $patients = $this->getDoctrine()
             ->getRepository(Patient::class)
-            ->findBy([], ['fullName' => 'ASC']);
-        return $this->render('patient/index.html.twig', ['patients' => $patients]);
+            ->getAllPatients($thisPage);
+
+        $maxPages = ceil($patients->count()/$limit);
+
+        return $this->render('patient/index.html.twig', ['patients' => $patients, 'maxPages' =>$maxPages, 'thisPage' => $thisPage]);
     }
 
-    //trq li security?
     /**
      * @param Request $request
      * @Route("/patient/crreate", name="patient_create")
@@ -50,7 +56,7 @@ class PatientController extends Controller
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
                 try {
                     $file->move($this->getParameter(
-                        'images_directory'), $fileName);
+                        'patients_images_directory'), $fileName);
                     $patient->setPhoto($fileName);
                 } catch (FileException $ex) {
 
@@ -113,6 +119,19 @@ class PatientController extends Controller
 
         if ($form->isSubmitted()&&$form->isValid())
         {
+            if ($form->getData()->getPhoto()!==null) {
+                /** @var UploadedFile $file */
+                $file = $form->getData()->getPhoto();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                try {
+                    $file->move($this->getParameter(
+                        'patients_images_directory'), $fileName);
+                    $patient->setPhoto($fileName);
+                } catch (FileException $ex) {
+
+                }
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($patient);
             $em->flush();

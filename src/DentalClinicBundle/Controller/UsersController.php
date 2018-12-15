@@ -2,10 +2,15 @@
 
 namespace DentalClinicBundle\Controller;
 
+use DateTime;
+use DentalClinicBundle\Entity\Tariff;
 use DentalClinicBundle\Entity\User;
+use DentalClinicBundle\Entity\Visit;
 use DentalClinicBundle\Form\UserType;
+use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,6 +34,19 @@ class UsersController extends Controller
 
             $user->setPassword($password);
 
+            if ($form->getData()->getPhoto()!==null) {
+                /** @var UploadedFile $file */
+                $file = $form->getData()->getPhoto();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                try {
+                    $file->move($this->getParameter(
+                        'users_images_directory'), $fileName);
+                    $user->setPhoto($fileName);
+                } catch (FileException $ex) {
+
+                }
+            }
+
 //            $role = $this
 //                ->getDoctrine()
 //                ->getRepository(Role::class)
@@ -50,13 +68,37 @@ class UsersController extends Controller
      * @Route("/user/profile/{id}", name="user_profile")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function viewUserProfileAction($id)
     {
+        if (isset($_POST['start']) || isset($_POST['end'])) {
+
+            $startDay = $_POST['start'];
+            $start = new DateTime($startDay);
+            $endDay = $_POST['end'];
+            $end = new DateTime($endDay);
+        } else {    // kak wsi4ki
+        $start = DateTime::createFromFormat('Y-m-d', "2018-11-01");
+        $end = new DateTime('now');
+    }
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
-        return $this->render('user/profile.html.twig', ['user' => $user]);
+
+        $visits = $this->getDoctrine()
+            ->getRepository(Visit::class)
+            ->getManipulations($user, $start, $end->modify('+1day'));
+
+        $sum = 0;
+        /** @var Visit $visit */
+        foreach ($visits as $visit) {
+            foreach ($visit->getManipulations() as $manipulation) {
+                 $sum+=$manipulation->getPrice();
+             }
+        }
+
+        return $this->render('user/profile.html.twig', ['user' => $user, 'visits' => $visits, 'sum' => $sum]);
     }
 
     /**
@@ -89,6 +131,19 @@ class UsersController extends Controller
                 ->encodePassword($user, $user->getPassword());
 
             $user->setPassword($password);
+
+            if ($form->getData()->getPhoto()!==null) {
+                /** @var UploadedFile $file */
+                $file = $form->getData()->getPhoto();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                try {
+                    $file->move($this->getParameter(
+                        'users_images_directory'), $fileName);
+                    $user->setPhoto($fileName);
+                } catch (FileException $ex) {
+
+                }
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

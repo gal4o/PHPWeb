@@ -2,6 +2,9 @@
 
 namespace DentalClinicBundle\Repository;
 
+use DentalClinicBundle\Entity\User;
+use DentalClinicBundle\Entity\Visit;
+
 /**
  * TariffRepository
  *
@@ -10,4 +13,17 @@ namespace DentalClinicBundle\Repository;
  */
 class TariffRepository extends \Doctrine\ORM\EntityRepository
 {
+//    /**
+//     * @param Visit $visit |ArrayCollection
+//     * @return mixed
+//     */
+//    public function sumEarnings($visit)
+//    {
+//        return $this->createQueryBuilder('t')
+//            ->andWhere('t.visits = visit')
+//            ->setParameters('visit', $visit->getManipulations())
+//            ->select('SUM(t.price)')
+//            ->getQuery()
+//            ->getResult();
+//    }
 }

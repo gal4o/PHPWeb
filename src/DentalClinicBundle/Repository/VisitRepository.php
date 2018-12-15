@@ -2,6 +2,9 @@
 
 namespace DentalClinicBundle\Repository;
 
+use DateTime;
+use DentalClinicBundle\Entity\User;
+
 /**
  * VisitRepository
  *
@@ -10,4 +13,20 @@ namespace DentalClinicBundle\Repository;
  */
 class VisitRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getManipulations(User $user, \DateTime $start , \DateTime $end) {
+
+        $query = $this->createQueryBuilder('v')
+            ->where('v.dentist = :dentist')
+            ->andWhere('v.date BETWEEN :start AND :end')
+//            ->andWhere('v.date < :end')
+            ->setParameter('dentist',$user)
+            ->setParameter('start', $start->format('Y-m-d'))
+            ->setParameter('end', $end->format('Y-m-d'))
+            ->addOrderBy('v.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
 }
