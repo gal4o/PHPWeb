@@ -1,50 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+
+    {% for msg in app.session.flashBag.get('info') %}
+        <div class="alert alert-danger">
+            <h2>{{ msg }}</h2>
+        </div>
+    {% endfor %}
+
     <div class="container body-content">
         <div class="row">
             <div class="col-md-12">
-        {% if app.user %}
-                <a href="{{ path('user_register') }}">Create new user</a><br><br>
-                <table class="table table-bordered">
-                    <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Full name</th>
-                    {#<th>Role</th>#}
-                    <th>Profile</th>
-                    <th colspan="3">Functions</th>
-                </tr>
-                    </thead>
-            {% for oneUser in users %}
-                <tr>
-                    <td>{{ oneUser.id }}</td>
-                    <td>{{ oneUser.fullName }}</td>
-                    {#<td>{{ oneUser.getRole }}</td>#}
-                    <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':oneUser.id}) }}">View</a></td>
-                    <td><a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':oneUser.id}) }}">Edit</a></td>
-                    <td><a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':oneUser.id}) }}">Delete</a></td>
-                </tr>
-            {% endfor %}
-            </table>
-                
+
+                {% if app.user %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1>Good morning fellow workers!</h1>
+                            <img src="{{ asset('uploads/coffee.jpg') }}" width="400" height="300" alt="Coffee">
+                        </div>
+
+                        <div class="col-md-6">
+                            <br><br><br>
+                            <p>I wish all of your patients to come out of the clinic like this:</p><br>
+                            <img src="{{ asset('uploads/smile.jpg') }}" width="400" height="300" alt="Smile">
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <h1>Good morning! For your health care our team:</h1>
+                    <hr>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Full name</th>
+                            <th>Role</th>
+                            <th>Profile</th>
+                        </tr>
+                        </thead>
+                        {% for oneUser in users %}
+                            <tr>
+                                <td>{{ oneUser.fullName }}</td>
+                                <td>{{ oneUser.role.name }}</td>
+                                <td>
+                                    {% if oneUser.photo!=null %}
+                                        <img src="{{ asset('uploads/users/' ~ oneUser.photo) }}" width="100" height="70">
+                                    {% else %}
+                                        <p>No photo</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                {% endif %}
             </div>
         </div>
-        {% else %}
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Good morning fellow workers!</h1>
-                <img src="{{ asset('uploads/coffee.jpg') }}" width="400" height="300" alt="Coffee">
-            </div>
-
-            <div class="col-md-6">
-                <br><br><br>
-                <p>I wish all of your patients to come out of the clinic like this:</p><br>
-                <img src="{{ asset('uploads/smile.jpg') }}" width="400" height="300" alt="Smile">
-            </div>
-
-        </div>
-        {% endif %}
     </div>
-
 {% endblock %}

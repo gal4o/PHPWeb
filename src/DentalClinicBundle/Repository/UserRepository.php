@@ -4,6 +4,8 @@ namespace DentalClinicBundle\Repository;
 
 use DentalClinicBundle\Entity\User;
 use DentalClinicBundle\Entity\Visit;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 
 
 /**
@@ -14,4 +16,36 @@ use DentalClinicBundle\Entity\Visit;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param int $currentPage
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
+    public function getAllUsers($currentPage)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->orderBy('u.fullName', 'ASC')
+            ->getQuery();
+
+        $paginator = $this->paginate($query, $currentPage);
+
+        return $paginator;
+    }
+
+    /**
+     * @param \Doctrine\ORM\Query $dql
+     * @param integer            $page
+     * @param integer            $limit
+     *
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
+    public function paginate($dql, $page, $limit=5 )
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
 }

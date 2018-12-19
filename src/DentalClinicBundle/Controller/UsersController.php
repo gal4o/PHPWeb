@@ -3,6 +3,7 @@
 namespace DentalClinicBundle\Controller;
 
 use DateTime;
+use DentalClinicBundle\Entity\Role;
 use DentalClinicBundle\Entity\Tariff;
 use DentalClinicBundle\Entity\User;
 use DentalClinicBundle\Entity\Visit;
@@ -10,12 +11,34 @@ use DentalClinicBundle\Form\UserType;
 use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UsersController extends Controller
 {
+    /**
+     * @param $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/user/index{page}", name="user_index")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function viewUsersAction($page = 1)
+    {
+        $limit = 5;
+        $thisPage = $page;
+
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->getAllUsers($thisPage);
+
+        $maxPages = ceil($users->count()/$limit);
+
+        return $this->render('user/index.html.twig', ['users' => $users, 'maxPages' =>$maxPages, 'thisPage' => $thisPage]);
+    }
+
     /**
      * @Route("/user/register", name="user_register")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -24,9 +47,19 @@ class UsersController extends Controller
      */
     public function registerAction(Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isHr())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $roles = $this->getDoctrine()
+            ->getRepository(Role::class)
+            ->findAll();
 
         if($form->isSubmitted()){
             $password = $this->get('security.password_encoder')
@@ -47,12 +80,11 @@ class UsersController extends Controller
                 }
             }
 
-//            $role = $this
-//                ->getDoctrine()
-//                ->getRepository(Role::class)
-//                ->findOneBy(['name' => 'ROLE_USER']);
-//
-//            $user->addRole($role);
+            $role = $this
+                ->getDoctrine()
+                ->getRepository(Role::class)
+                ->findOneBy(['name' => $request->get('role')]);
+            $user->setRole($role);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -61,7 +93,7 @@ class UsersController extends Controller
             return $this->redirectToRoute("homepage");
         }
 
-        return $this->render('user/register.html.twig');
+        return $this->render('user/register.html.twig', array('roles' =>$roles));
     }
 
     /**
@@ -72,6 +104,16 @@ class UsersController extends Controller
      */
     public function viewUserProfileAction($id)
     {
+
+        $currentUser = $this->getUser();
+
+        if (($currentUser->getId()!=$id)&&
+            (!$currentUser->isAdmin()&&!$currentUser->isMoney()))
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         if (isset($_POST['start']) || isset($_POST['end'])) {
 
             $startDay = $_POST['start'];
@@ -81,7 +123,7 @@ class UsersController extends Controller
         } else {    // kak wsi4ki
         $start = DateTime::createFromFormat('Y-m-d', "2018-11-01");
         $end = new DateTime('now');
-    }
+        }
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
@@ -110,6 +152,13 @@ class UsersController extends Controller
      */
     public function editUserProfileAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isHr())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
@@ -117,20 +166,25 @@ class UsersController extends Controller
             return $this->redirectToRoute("homepage");
         }
 
-//        $currentUser = $this->getUser();
-//        if (!$currentUser->isAdmin()) //ili humanResourse
-//        {
-//            return $this->redirectToRoute("homepage");
-//        }
+        $roles = $this->getDoctrine()
+            ->getRepository(Role::class)
+            ->findAll();
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted()&&$form->isValid())
         {
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPassword());
 
             $user->setPassword($password);
+            $role = $this
+                ->getDoctrine()
+                ->getRepository(Role::class)
+                ->findOneBy(['name' => $request->get('role')]);
+
+            $user->setRole($role);
 
             if ($form->getData()->getPhoto()!==null) {
                 /** @var UploadedFile $file */
@@ -151,9 +205,12 @@ class UsersController extends Controller
             return $this->redirectToRoute('user_profile',
                 array('id' => $user->getId()));
         }
+
         return $this->render('user/edit.html.twig',
             array('user' => $user,
-                'form' => $form->createView()));
+                'roles' => $roles,
+                'form' => $form->createView()
+            ));
     }
 
     /**
@@ -165,18 +222,19 @@ class UsersController extends Controller
      */
     public function deleteUserProfileAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isHr())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
         if ($user === null) {
             return $this->redirectToRoute('homepage');
         }
-
-        //        $currentUser = $this->getUser();
-//        if (!$currentUser->isAdmin()) //ili humanResourse
-//        {
-//            return $this->redirectToRoute("homepage");
-//        }
 
         $form = $this->createForm(UserType::class, $user);
         $form ->handleRequest($request);
@@ -185,6 +243,7 @@ class UsersController extends Controller
             $em->remove($user);
             $em->flush();
             return $this->redirectToRoute('homepage');
+
         }
         return $this->render('user/delete.html.twig',
             array('user' => $user,

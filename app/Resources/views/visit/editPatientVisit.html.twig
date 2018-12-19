@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-
     <div class="container body-content span=8 offset=2">
         <div class="well">
             <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('visit_edit', {'id':visit.id}) }}" method="POST">
                 <fieldset>
                     <legend>New Visit</legend>
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_note">Note</label>
                         <div class="col-sm-4 ">
@@ -15,7 +13,6 @@
                                    placeholder="Visit Note" name="visit[note]" value="{{ visit.note }}" >
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_manipulation">Treatment</label>
                         <div class="col-sm-4 ">
@@ -39,8 +36,5 @@
             </form>
         </div>
     </div>
-
 {% endblock %}
-
-
 

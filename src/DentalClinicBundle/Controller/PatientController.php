@@ -23,7 +23,7 @@ class PatientController extends Controller
      */
     public function viewPatientsAction($page = 1)
     {
-        $limit = 5;
+        $limit = 10;
         $thisPage = $page;
 
         $patients = $this->getDoctrine()
@@ -81,6 +81,12 @@ class PatientController extends Controller
      */
     public function viewPatientAction($id)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isDentist())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
         $patient = $this->getDoctrine()
             ->getRepository(Patient::class)
             ->find($id);

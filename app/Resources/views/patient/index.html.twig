@@ -21,7 +21,9 @@
                             <td>{{ patient.id }}</td>
                             <td>{{ patient.fullName }}</td>
                             <td>{{ patient.getPhone }}</td>
+                            {% if app.user.isDentist() or app.user.isAdmin() %}
                             <td><a class="btn btn-default btn-xs" href="{{ path('patient_profile',{'id':patient.id}) }}">View</a></td>
+                            {% endif %}
                             <td><a class="btn btn-success btn-xs" href="{{ path('patient_edit',{'id':patient.id}) }}">Edit</a></td>
                             <td><a class="btn btn-danger btn-xs" href="{{ path('patient_delete',{'id':patient.id}) }}">Delete</a></td>
                             {#<td><a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':patient.id}) }}">Add Manipulation</a></td>#}

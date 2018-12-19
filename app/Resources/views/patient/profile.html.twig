@@ -24,8 +24,9 @@
             <p>No photo</p>
             {% endif %}
         </div>
-
+        {% if app.user.isDentist() %}
         <td><a class="btn btn-default btn-xs" href="{{ path('visit_create',{'id':patient.id}) }}">Add visit</a></td>
+        {% endif %}
 
         <div class="col-md-12">
             <strong>Manipulations:</strong><br>
@@ -37,7 +38,9 @@
                 <th>Treatments</th>
                 <th>note</th>
                 <th>Dentist</th>
-                {#<th>Add note</th>#}
+                {% if app.user.isDentist() %}
+                <th>Add note</th>
+                {% endif %}
             </tr>
             </thead>
         {% for manipulation in visits %}
@@ -47,7 +50,9 @@
                 <td>{{ manipulation.Manipulations|join(",") }}</td>
                 <td>{{ manipulation.note }}</td>
                 <td>{{ manipulation.dentist.FullName }}</td>
-                {#<td><a href="{{ path('visit_edit', {'id':manipulation.id}) }}">Add note</a> </td>#}
+                {% if app.user.isDentist() %}
+                <td><a href="{{ path('visit_edit', {'id':manipulation.id}) }}">Add note</a> </td>
+                {% endif %}
             </tr>
         {% else %}
             <p>
@@ -61,7 +66,6 @@
     <a class="btn btn-default btn-xs" href="{{ path('patient_index') }}">Home</a>
     <a class="btn btn-success btn-xs" href="{{ path('patient_edit',{'id':patient.id}) }}">Edit</a>
     <a class="btn btn-danger btn-xs" href="{{ path('patient_delete',{'id':patient.id}) }}">Delete</a>
-    {#<a class="btn btn-success btn-xs" href="{{ path('patient_addManipulation',{'id':user.id}) }}">Add manipulation</a>#}
     </footer>
 
     </div>

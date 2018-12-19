@@ -79,7 +79,7 @@ class Visit
      * @param Tariff $manipulation
      * @return Visit
      */
-    public function addManipulations(Tariff $manipulation)
+    public function addManipulations($manipulation)
     {
 //        $manipulation->setVisits($this);
         $this->manipulations[] = $manipulation;

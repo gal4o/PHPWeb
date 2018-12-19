@@ -40,11 +40,11 @@
                                     View Patients
                                 </a>
                             </li>
-                            {#<li>#}
-                                {#<a href="{{ path('user_register') }}">#}
-                                    {#Register New User#}
-                                {#</a>#}
-                            {#</li>#}
+                            <li>
+                                <a href="{{ path( 'user_index') }}">
+                                    View Users
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ path('user_profile',{id:app.user.id})}}">
                                     My Profile
@@ -56,11 +56,6 @@
                                 </a>
                             </li>
                         {% else %}
-                            <li>
-                                <a href="{{ path('user_register') }}">
-                                    REGISTER
-                                </a>
-                            </li>
                             <li>
                                 <a href="{{ path('security_login') }}">
                                     LOGIN

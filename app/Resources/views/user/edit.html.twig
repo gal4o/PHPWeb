@@ -36,7 +36,17 @@
                                    placeholder="User Photo" name="user[photo]">
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_role">Role</label>
+                        <div class="col-sm-4 " >
+                            <select name="role"  required >
+                                <option></option>
+                                {% for role in roles %}
+                                    <option>{{ role.name }}</option>
+                                {% endfor %} }}
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" href="{{ path('user_profile', {id: user.id}) }}">Cancel</a>

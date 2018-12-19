@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12">
+                {% if app.user.isAdmin() or app.user.isHr() %}
+                <a href="{{ path('user_register') }}">Create new user</a><br><br>
+               {% endif %}
+                <hr>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Full name</th>
+                        <th>Role</th>
+                        {% if app.user.isAdmin() or app.user.isMoney() %}
+                            <th>Profile</th>
+                        {% endif %}
+                        {% if app.user.isAdmin() or app.user.isHr() %}
+                            <th colspan="3">Functions</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    {% for oneUser in users %}
+                        <tr>
+                            <td>{{ oneUser.id }}</td>
+                            <td>{{ oneUser.fullName }}</td>
+                            <td>{{ oneUser.getRole.getName }}</td>
+                            {% if app.user.isAdmin() or app.user.isMoney() %}
+                            <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':oneUser.id}) }}">View</a></td>
+                            {% endif %}
+                            {% if app.user.isAdmin() or app.user.isHr() %}
+                                <td><a class="btn btn-success btn-xs" href="{{ path('user_edit',{'id':oneUser.id}) }}">Edit</a></td>
+                            <td><a class="btn btn-danger btn-xs" href="{{ path('user_delete',{'id':oneUser.id}) }}">Delete</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {% if maxPages > 1 %}
+                    <ul class="pagination pagination-sm">
+                        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                            <a href="{{ path('user_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                        </li>
+
+                        {% for i in 1..maxPages %}
+                            <li {{ thisPage == i ? 'class="active"' }}>
+                                <a href="{{ path('user_index', {page: i}) }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                            <a href="{{ path('user_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                        </li>
+                    </ul>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

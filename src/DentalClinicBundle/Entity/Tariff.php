@@ -127,5 +127,6 @@ class Tariff
     {
         return $this->price;
     }
+
 }
 

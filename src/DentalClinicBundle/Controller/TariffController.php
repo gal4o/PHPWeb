@@ -31,6 +31,12 @@ class TariffController extends Controller
      */
     public function createTariffAction(Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isMoney())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
         $tariff = new Tariff();
         $form = $this->createForm(TariffType::class, $tariff);
         $form->handleRequest($request);
@@ -55,6 +61,13 @@ class TariffController extends Controller
      */
     public function editTariffAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isMoney())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         $tariff = $this->getDoctrine()
             ->getRepository(Tariff::class)
             ->find($id);
@@ -62,12 +75,6 @@ class TariffController extends Controller
         if ($tariff === null) {
             return $this->redirectToRoute('tariff_index');
         }
-
-//        $currentUser = $this->getUser();
-//        if (!$currentUser->isAdmin()&&!$currentUser->isDentist() )
-//        {
-//            return $this->redirectToRoute('patient_index');
-//        }
 
         $form = $this->createForm(TariffType::class, $tariff);
         $form->handleRequest($request);
@@ -93,6 +100,13 @@ class TariffController extends Controller
      */
     public function deleteTariffAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin()&&!$currentUser->isMoney())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
         $tariff = $this->getDoctrine()
             ->getRepository(Tariff::class)
             ->find($id);

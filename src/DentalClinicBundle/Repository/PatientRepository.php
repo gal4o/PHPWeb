@@ -33,7 +33,7 @@ class PatientRepository extends \Doctrine\ORM\EntityRepository
      *
      * @return \Doctrine\ORM\Tools\Pagination\Paginator
      */
-    public function paginate($dql, $page, $limit=5 )
+    public function paginate($dql, $page, $limit=10 )
     {
         $paginator = new Paginator($dql);
 

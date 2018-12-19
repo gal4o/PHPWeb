@@ -58,9 +58,30 @@ class User implements UserInterface
      */
     private $visits;
 
-    public function __construct()
+    /**
+     *
+     *
+     * @ORM\ManyToOne(targetEntity="DentalClinicBundle\Entity\Role", inversedBy="users")
+     * @ORM\JoinColumn(name="roleId", referencedColumnName="id")
+     */
+    private $role;
+
+    /**
+     * @return Role
+     */
+    public function getRole()
     {
-        $this->visits = new ArrayCollection();
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     * @return User
+     */
+    public function setRole(Role $role = null)
+    {
+        $this->role = $role;
+        return $this;
     }
 
     /**
@@ -228,6 +249,42 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin() {
+        if ($this->getRole()->getName() === "Admin") {
+            return true;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHr() {
+        if ($this->getRole()->getName() === "Hr") {
+            return true;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMoney() {
+        if ($this->getRole()->getName() === "Money") {
+            return true;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDentist() {
+        if ($this->getRole()->getName() === "Dentist") {
+            return true;
+        }
     }
 }
 
