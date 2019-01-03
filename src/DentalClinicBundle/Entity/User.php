@@ -60,11 +60,33 @@ class User implements UserInterface
 
     /**
      *
-     *
      * @ORM\ManyToOne(targetEntity="DentalClinicBundle\Entity\Role", inversedBy="users")
      * @ORM\JoinColumn(name="roleId", referencedColumnName="id")
      */
     private $role;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="DentalClinicBundle\Entity\ClinicBranch", inversedBy="users")
+     * @ORM\JoinColumn(name="branchId", referencedColumnName="id")
+     */
+    private $clinic;
+
+    /**
+     * @return mixed
+     */
+    public function getClinic()
+    {
+        return $this->clinic;
+    }
+
+    /**
+     * @param mixed $clinic
+     */
+    public function setClinic($clinic)
+    {
+        $this->clinic = $clinic;
+    }
 
     /**
      * @return Role
@@ -272,8 +294,8 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isMoney() {
-        if ($this->getRole()->getName() === "Money") {
+    public function isFinancier() {
+        if ($this->getRole()->getName() === "Financier") {
             return true;
         }
     }

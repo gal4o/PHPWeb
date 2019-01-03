@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('order_create') }}" method="POST">
+                <fieldset>
+                    <legend>New Order</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="material">Material</label>
+                        <div class="col-sm-4 ">
+                            <select name="material">
+                                <option></option>
+                                {% for material in materials %}
+                                    <option>{{ material.name }}</option>
+                                {% endfor %} }}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="quantity">Quantity</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control" id="order_quantity"
+                                   placeholder="Order Quantity" name="order[quantity]" >
+                        </div>
+                    </div>
+
+                    {{ form_row(form._token) }}
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('user_profile', {'id':app.user.id}) }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

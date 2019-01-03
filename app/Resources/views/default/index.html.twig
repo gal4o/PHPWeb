@@ -16,7 +16,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h1>Good morning fellow workers!</h1>
+                            <h1>Good morning colleagues!</h1>
                             <img src="{{ asset('uploads/coffee.jpg') }}" width="400" height="300" alt="Coffee">
                         </div>
 
@@ -35,16 +35,16 @@
                         <thead>
                         <tr>
                             <th>Full name</th>
-                            <th>Role</th>
+                            <th>Clinic</th>
                             <th>Profile</th>
                         </tr>
                         </thead>
                         {% for oneUser in users %}
                             <tr>
                                 <td>{{ oneUser.fullName }}</td>
-                                <td>{{ oneUser.role.name }}</td>
+                                <td>{{ oneUser.clinic.name }}</td>
                                 <td>
-                                    {% if oneUser.photo!=null %}
+                                    {% if oneUser.photo!= null %}
                                         <img src="{{ asset('uploads/users/' ~ oneUser.photo) }}" width="100" height="70">
                                     {% else %}
                                         <p>No photo</p>

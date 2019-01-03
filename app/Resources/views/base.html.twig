@@ -36,6 +36,16 @@
                         </li>
                         {% if app.user %}
                             <li>
+                                <a href="{{ path( 'order_view') }}">
+                                    View Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path( 'material_index') }}">
+                                    View Materials
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ path( 'patient_index') }}">
                                     View Patients
                                 </a>

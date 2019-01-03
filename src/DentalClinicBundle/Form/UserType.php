@@ -2,6 +2,7 @@
 
 namespace DentalClinicBundle\Form;
 
+use DentalClinicBundle\Entity\ClinicBranch;
 use DentalClinicBundle\Entity\Role;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,11 +23,12 @@ class UserType extends AbstractType
         $builder->add('username', TextType::class)
             ->add('password', TextType::class)
             ->add('fullName', TextType::class)
-//            ->add('role', EntityType::class, [
-//                'class' => Role::class,
-//                'choice_label' => 'name'
-//            ])
-            ->add('photo', FileType::class, ['data' => null]);
+            ->add('photo', FileType::class, ['data' => null])
+            ->add('clinic', EntityType::class, [
+                'class' => ClinicBranch::class,
+                'choice_label' => 'name'
+            ]);
+
         $builder -> addEventListener ( FormEvents :: PRE_SET_DATA , function ( FormEvent $event ) {
             $user = $event -> getData ();
             $form = $event -> getForm ();

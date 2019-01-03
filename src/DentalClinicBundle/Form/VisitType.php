@@ -6,6 +6,7 @@ use DentalClinicBundle\Entity\Tariff;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -24,15 +25,13 @@ class VisitType extends AbstractType
 
             if ( ! $visit || null === $visit -> getId ()) {
                 $form->add('manipulations', EntityType::class, [
-
-//                    'entry_type' => Tariff::class,
-//                    'entry_options' => array('label'=>false),
-//                    'allow_add' => true,
                     'class' => Tariff::class,
                     'choice_label' => 'treatment',
                     'multiple' => true,
                 ]);
             }});
+
+        $builder->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

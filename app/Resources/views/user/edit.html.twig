@@ -36,13 +36,24 @@
                                    placeholder="User Photo" name="user[photo]">
                         </div>
                     </div>
+                    {#<div class="form-group">#}
+                        {#<label class="col-sm-4 control-label" for="user_role">Role</label>#}
+                        {#<div class="col-sm-4 " >#}
+                            {#<select name="role"  required >#}
+                                {#<option></option>#}
+                                {#{% for role in roles %}#}
+                                    {#<option>{{ role.name }}</option>#}
+                                {#{% endfor %} }}#}
+                            {#</select>#}
+                        {#</div>#}
+                    {#</div>#}
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="user_role">Role</label>
-                        <div class="col-sm-4 " >
-                            <select name="role"  required >
+                        <label class="col-sm-4 control-label" for="user_clinic">Clinic</label>
+                        <div class="col-sm-4 ">
+                            <select name="clinic" required>
                                 <option></option>
-                                {% for role in roles %}
-                                    <option>{{ role.name }}</option>
+                                {% for clinic in clinics %}
+                                    <option>{{ clinic.name }}</option>
                                 {% endfor %} }}
                             </select>
                         </div>

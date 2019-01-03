@@ -10,7 +10,6 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Treatment</th>
                         <th>Price</th>
                         {% if app.user and (app.user.isAdmin() or app.user.isMoney()) %}
@@ -20,7 +19,6 @@
                     </thead>
                     {% for tariff in tariffs %}
                         <tr>
-                            <td>{{ tariff.id }}</td>
                             <td>{{ tariff.treatment }}</td>
                             <td>{{ tariff.price }}</td>
                             {% if app.user and(app.user.isAdmin() or app.user.isMoney()) %}

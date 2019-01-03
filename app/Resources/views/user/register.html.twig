@@ -45,6 +45,18 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-4 control-label" for="user_clinic">Clinic</label>
+                        <div class="col-sm-4 ">
+                            <select name="clinic" required>
+                                <option></option>
+                                {% for clinic in clinics %}
+                                    <option>{{ clinic.name }}</option>
+                                {% endfor %} }}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">
                             <a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
                             <button type="submit" class="btn btn-primary">Submit</button>

@@ -28,7 +28,7 @@ class VisitController extends Controller
             $this->addFlash('info', "Access denied");
             return $this->redirectToRoute("homepage");
         }
-        //dobavi manip
+
         $visit = new Visit();
         $form = $this->createForm(VisitType::class, $visit);
         $form->handleRequest($request);
@@ -44,9 +44,11 @@ class VisitController extends Controller
 
             $visit->setDentist($this->getUser());
             $visit->setPatient($patient);
-            $tariffRepo = $this->getDoctrine()->getRepository(Tariff::class);
-            $addTariffs = $tariffRepo->findBy(['treatment' => $request->get('treatment')]);
-//            var_dump($addTariff);exit();
+            $tariffRepo = $this->getDoctrine()
+                ->getRepository(Tariff::class);
+            $addTariffs = $tariffRepo->findBy(
+                ['treatment' => $request->get('treatment')]);
+
             foreach ($addTariffs as $tariff) {
                 $visit->addManipulations($tariff);
             }
@@ -62,7 +64,8 @@ class VisitController extends Controller
         return $this->render('visit/create',
             array('form' => $form->createView(),
                 'patient' => $patient,
-                'tariff' => $tariff));
+                'tariff' => $tariff
+            ));
     }
 
     /**
@@ -88,11 +91,8 @@ class VisitController extends Controller
         $patient = $visit->getPatient();
 
         if ($visit === null) {
-
             return $this->redirectToRoute('patient_profile',
-
                 array(['id' => $patient->getId()]));
-
         }
 
         $form = $this->createForm(VisitType::class, $visit);
@@ -105,6 +105,7 @@ class VisitController extends Controller
             return $this->redirectToRoute('patient_profile',
                 array('id' => $patient->getId()));
         }
-        return $this->render('visit/editPatientVisit.html.twig', ['visit' => $visit, 'form' => $form]);
+        return $this->render('visit/editPatientVisit.html.twig',
+            ['visit' => $visit, 'form' => $form]);
     }
 }

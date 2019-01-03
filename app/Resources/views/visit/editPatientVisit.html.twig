@@ -5,7 +5,7 @@
         <div class="well">
             <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('visit_edit', {'id':visit.id}) }}" method="POST">
                 <fieldset>
-                    <legend>New Visit</legend>
+                    <legend>Add note</legend>
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_note">Note</label>
                         <div class="col-sm-4 ">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                    {#{{ form_row(form._token) }}#}
+                    {{ form_row(form._token) }}
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-4">

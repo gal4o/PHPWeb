@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+
+        <div class="row">
+            <div class="col-md-12">
+            <form action="" method="post">
+                <input name="filter_supplier" type="text" value="supplier">
+                <div id="dropdown" class="dropdown-content">
+                <select name="filter_status">
+                       <option>waiting</option>
+                       <option>processing</option>
+                       <option>ready</option>
+                </select>
+                </div>
+                <button type="submit" class="btn btn-default">search</button>
+            </form>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Quantity</th>
+                    </tr>
+                    </thead>
+                    {% for material, quantity in needMaterials %}
+                    <tr>
+                        <td>{{ material }}</td>
+                        <td>{{ quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Quantity</th>
+                        <th>User</th>
+                        <th>Supplier</th>
+                        <th>Status</th>
+                        <th colspan="2">Functions</th>
+                    </tr>
+                    </thead>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.material.name }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.dentist.fullName }}</td>
+                            <td>{{ order.material.supplier }}</td>
+                            <td>{{ order.status }}</td>
+                            <td><a class="btn btn-success btn-xs" href="{{ path('order_edit',{'id':order.id}) }}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {#{% if maxPages > 1 %}#}
+                    {#<ul class="pagination pagination-sm">#}
+                        {#<li {{ thisPage == 1 ? 'class="disabled"' }}>#}
+                            {#<a href="{{ path('patient_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>#}
+                        {#</li>#}
+
+                        {#{% for i in 1..maxPages %}#}
+                            {#<li {{ thisPage == i ? 'class="active"' }}>#}
+                                {#<a href="{{ path('patient_index', {page: i}) }}">{{ i }}</a>#}
+                            {#</li>#}
+                        {#{% endfor %}#}
+
+                        {#<li {{ thisPage == maxPages ? 'class="disabled"' }}>#}
+                            {#<a href="{{ path('patient_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#{% endif %}#}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

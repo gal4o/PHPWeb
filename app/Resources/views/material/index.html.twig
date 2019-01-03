@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12">
+                {% if app.user and (app.user.isAdmin() or app.user.isMoney()) %}
+                    <a href="{{ path('material_create') }}">Create new material</a><br><br>
+                {% endif %}
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Price</th>
+                        <th>Supplier</th>
+                        {% if app.user and (app.user.isAdmin() or app.user.isMoney()) %}
+                            <th colspan="2">Functions</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    {% for material in materials%}
+                        <tr>
+                            <td>{{ material.name }}</td>
+                            <td>{{ material.price }}</td>
+                            <td>{{ material.supplier }}</td>
+                            {% if app.user and(app.user.isAdmin() or app.user.isMoney()) %}
+                                <td><a class="btn btn-success btn-xs" href="{{ path('material_edit',{'id':material.id}) }}">Edit</a></td>
+                                <td><a class="btn btn-danger btn-xs" href="{{ path('material_delete',{'id':material.id}) }}">Delete</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {% if maxPages > 1 %}
+                    <ul class="pagination pagination-sm">
+                        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                            <a href="{{ path('patient_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                        </li>
+
+                        {% for i in 1..maxPages %}
+                            <li {{ thisPage == i ? 'class="active"' }}>
+                                <a href="{{ path('patient_index', {page: i}) }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+
+                        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                            <a href="{{ path('patient_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                        </li>
+                    </ul>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

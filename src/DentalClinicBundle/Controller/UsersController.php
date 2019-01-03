@@ -3,15 +3,13 @@
 namespace DentalClinicBundle\Controller;
 
 use DateTime;
+use DentalClinicBundle\Entity\ClinicBranch;
 use DentalClinicBundle\Entity\Role;
-use DentalClinicBundle\Entity\Tariff;
 use DentalClinicBundle\Entity\User;
 use DentalClinicBundle\Entity\Visit;
 use DentalClinicBundle\Form\UserType;
-use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +34,8 @@ class UsersController extends Controller
 
         $maxPages = ceil($users->count()/$limit);
 
-        return $this->render('user/index.html.twig', ['users' => $users, 'maxPages' =>$maxPages, 'thisPage' => $thisPage]);
+        return $this->render('user/index.html.twig',
+            ['users' => $users, 'maxPages' =>$maxPages, 'thisPage' => $thisPage]);
     }
 
     /**
@@ -59,6 +58,10 @@ class UsersController extends Controller
         $form->handleRequest($request);
         $roles = $this->getDoctrine()
             ->getRepository(Role::class)
+            ->findAll();
+        /** @var ClinicBranch $clinics */
+        $clinics = $this->getDoctrine()
+            ->getRepository(ClinicBranch::class)
             ->findAll();
 
         if($form->isSubmitted()){
@@ -84,16 +87,23 @@ class UsersController extends Controller
                 ->getDoctrine()
                 ->getRepository(Role::class)
                 ->findOneBy(['name' => $request->get('role')]);
+
+            $clinic = $this
+                ->getDoctrine()
+                ->getRepository(ClinicBranch::class)
+                ->findOneBy(['name' => $request->get('clinic')]);
+            $user->setClinic($clinic);
             $user->setRole($role);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute("homepage");
+            return $this->redirectToRoute("user_index");
         }
 
-        return $this->render('user/register.html.twig', array('roles' =>$roles));
+        return $this->render('user/register.html.twig',
+            array('roles' =>$roles, 'clinics' => $clinics));
     }
 
     /**
@@ -108,7 +118,7 @@ class UsersController extends Controller
         $currentUser = $this->getUser();
 
         if (($currentUser->getId()!=$id)&&
-            (!$currentUser->isAdmin()&&!$currentUser->isMoney()))
+            (!$currentUser->isAdmin()&&!$currentUser->isFinancier()))
         {
             $this->addFlash('info', "Access denied");
             return $this->redirectToRoute("homepage");
@@ -120,7 +130,7 @@ class UsersController extends Controller
             $start = new DateTime($startDay);
             $endDay = $_POST['end'];
             $end = new DateTime($endDay);
-        } else {    // kak wsi4ki
+        } else {
         $start = DateTime::createFromFormat('Y-m-d', "2018-11-01");
         $end = new DateTime('now');
         }
@@ -163,11 +173,16 @@ class UsersController extends Controller
             ->getRepository(User::class)
             ->find($id);
         if ($user === null) {
+            $this->addFlash('info', "This user does not exist.");
             return $this->redirectToRoute("homepage");
         }
 
         $roles = $this->getDoctrine()
             ->getRepository(Role::class)
+            ->findAll();
+
+        $clinics = $this->getDoctrine()
+            ->getRepository(ClinicBranch::class)
             ->findAll();
 
         $form = $this->createForm(UserType::class, $user);
@@ -177,14 +192,12 @@ class UsersController extends Controller
         {
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPassword());
-
             $user->setPassword($password);
-            $role = $this
+            $clinic = $this
                 ->getDoctrine()
-                ->getRepository(Role::class)
-                ->findOneBy(['name' => $request->get('role')]);
-
-            $user->setRole($role);
+                ->getRepository(ClinicBranch::class)
+                ->findOneBy(['name' => $request->get('clinic')]);
+            $user->setClinic($clinic);
 
             if ($form->getData()->getPhoto()!==null) {
                 /** @var UploadedFile $file */
@@ -209,7 +222,8 @@ class UsersController extends Controller
         return $this->render('user/edit.html.twig',
             array('user' => $user,
                 'roles' => $roles,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'clinics' => $clinics
             ));
     }
 
@@ -233,6 +247,7 @@ class UsersController extends Controller
             ->getRepository(User::class)
             ->find($id);
         if ($user === null) {
+            $this->addFlash('info', "This user does not exist.");
             return $this->redirectToRoute('homepage');
         }
 
@@ -242,7 +257,7 @@ class UsersController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('user_index');
 
         }
         return $this->render('user/delete.html.twig',

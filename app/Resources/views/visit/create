@@ -2,15 +2,14 @@
 
 {% block main %}
 
+
     <div class="container body-content span=8 offset=2">
         <div class="well">
-            <form class="form-horizontal" enctype="multipart/form-data" action="{{ path('visit_create', {'id':patient.id}) }}" method="POST">
+            <form class="form-horizontal"
+                  enctype="multipart/form-data" action="{{ path('visit_create', {'id':patient.id}) }}" method="POST"
+            >
                 <fieldset>
                     <legend>New Visit</legend>
-
-                    {#{{ form_start ( form ) }}#}
-                    {# render the task's only field: description #}
-                    {#{{ form_row ( form.note ) }}#}
 
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_note">Note</label>
@@ -23,47 +22,14 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="visit_manipulation">Treatment</label>
                         <div class="col-sm-4 ">
-                            <select multiple name="treatment">
+                            <select aria-multiselectable="true" multiple="multiple" name="treatment[]">
                                 <option></option>
                                 {% for manipulation in tariff %}
-                                    <option>{{ manipulation.treatment }}</option>
+                                    <option value="{{ manipulation.treatment }}">{{ manipulation.treatment }}</option>
                                 {% endfor %} }}
                             </select>
                         </div>
                     </div>
-
-                    {#<script>#}
-                    {#var $collectionHolder ;#}
-
-                    {#// setup an "add a tag" link#}
-                    {#var $addTariffButton = $ ( '<button type="button" class="add_tariff_link">Add a tariff</button>' );#}
-                    {#var $newLinkLi = $ ( '<li></li>' ). append ( $addTariffButton );#}
-
-                    {#jQuery ( document ). ready ( function () {#}
-                    {#// Get the ul that holds the collection of tags#}
-                    {#$collectionHolder = $ ( 'ul.manipulations' );#}
-
-                    {#// add the "add a tag" anchor and li to the tags ul#}
-                    {#$collectionHolder . append ( $newLinkLi );#}
-
-                    {#// count the current form inputs we have (e.g. 2), use that as the new#}
-                    {#// index when inserting a new item (e.g. 2)#}
-                    {#$collectionHolder . data ( 'index' , $collectionHolder . find ( ':input' ). length );#}
-
-                    {#$addTariffButton . on ( 'click' , function ( e ) {#}
-                    {#// add a new tag form (see next code block)#}
-                    {#addTariffForm ( $collectionHolder , $newLinkLi );#}
-                    {#});#}
-                    {#});#}
-                    {#</script>#}
-                    {#<h3> Manipulations </h3>#}
-                    {#<ul class= "manipulations" data-prototype= " {{ form_widget ( form.tags.vars.prototype )| e ( 'html_attr' ) }} ">#}
-                        {# iterate over each existing tag and render its only field: name #}
-                        {#{% for tariff in form.manipulations %}#}
-                            {#<li> {{ form_row ( tariff.name ) }} </li>#}
-                        {#{% endfor %}#}
-                    {#</ul>#}
-                    {#{{ form_end ( form ) }}#}
 
                     {{ form_row(form._token) }}
 

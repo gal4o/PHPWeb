@@ -23,16 +23,24 @@ class PatientController extends Controller
      */
     public function viewPatientsAction($page = 1)
     {
-        $limit = 10;
-        $thisPage = $page;
+            $limit = 10;
+            $thisPage = $page;
 
-        $patients = $this->getDoctrine()
-            ->getRepository(Patient::class)
-            ->getAllPatients($thisPage);
+        if (isset($_POST['filter'])) {
 
-        $maxPages = ceil($patients->count()/$limit);
+            $filter = $_POST['filter'];
+            $patients = $this->getDoctrine()
+                ->getRepository(Patient::class)
+                ->findByPhone($filter, $thisPage);
+        } else {
+            $patients = $this->getDoctrine()
+                ->getRepository(Patient::class)
+                ->getAllPatients($thisPage);
+        }
+            $maxPages = ceil($patients->count() / $limit);
 
-        return $this->render('patient/index.html.twig', ['patients' => $patients, 'maxPages' =>$maxPages, 'thisPage' => $thisPage]);
+            return $this->render('patient/index.html.twig', ['patients' => $patients, 'maxPages' => $maxPages, 'thisPage' => $thisPage]);
+
     }
 
     /**
@@ -113,12 +121,6 @@ class PatientController extends Controller
         if ($patient === null) {
             return $this->redirectToRoute('patient_index');
         }
-
-//        $currentUser = $this->getUser();
-//        if (!$currentUser->isAdmin()&&!$currentUser->isDentist() )
-//        {
-//            return $this->redirectToRoute('patient_index');
-//        }
 
         $form = $this->createForm(PatientType::class, $patient);
         $form->handleRequest($request);

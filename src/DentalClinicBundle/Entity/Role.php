@@ -86,14 +86,5 @@ class Role
         return $this;
     }
 
-    public function removeProduct ( User $user )
-    {
-            $this -> users -> removeElement ( $user );
-            if ( $user -> getRole() === $this ) {
-                $user -> setRole( null );
-            }
-
-        return $this ;
-    }
 }
 

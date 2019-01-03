@@ -12,9 +12,9 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Full name</th>
                         <th>Role</th>
+                        <th>Clinic Branch</th>
                         {% if app.user.isAdmin() or app.user.isMoney() %}
                             <th>Profile</th>
                         {% endif %}
@@ -25,9 +25,9 @@
                     </thead>
                     {% for oneUser in users %}
                         <tr>
-                            <td>{{ oneUser.id }}</td>
                             <td>{{ oneUser.fullName }}</td>
                             <td>{{ oneUser.getRole.getName }}</td>
+                            <td>{{ oneUser.getClinic.getName }}</td>
                             {% if app.user.isAdmin() or app.user.isMoney() %}
                             <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':oneUser.id}) }}">View</a></td>
                             {% endif %}

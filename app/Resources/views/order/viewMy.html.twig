@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    {% for order in orders%}
+                        <tr>
+                            <td>{{ order.material.name }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {#{% if maxPages > 1 %}#}
+                {#<ul class="pagination pagination-sm">#}
+                {#<li {{ thisPage == 1 ? 'class="disabled"' }}>#}
+                {#<a href="{{ path('patient_index', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>#}
+                {#</li>#}
+
+                {#{% for i in 1..maxPages %}#}
+                {#<li {{ thisPage == i ? 'class="active"' }}>#}
+                {#<a href="{{ path('patient_index', {page: i}) }}">{{ i }}</a>#}
+                {#</li>#}
+                {#{% endfor %}#}
+
+                {#<li {{ thisPage == maxPages ? 'class="disabled"' }}>#}
+                {#<a href="{{ path('patient_index', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>#}
+                {#</li>#}
+                {#</ul>#}
+                {#{% endif %}#}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+

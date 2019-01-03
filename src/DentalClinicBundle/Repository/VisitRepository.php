@@ -2,7 +2,6 @@
 
 namespace DentalClinicBundle\Repository;
 
-use DateTime;
 use DentalClinicBundle\Entity\User;
 
 /**

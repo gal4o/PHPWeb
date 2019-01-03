@@ -4,7 +4,6 @@ namespace DentalClinicBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Visit
@@ -81,9 +80,7 @@ class Visit
      */
     public function addManipulations($manipulation)
     {
-//        $manipulation->setVisits($this);
         $this->manipulations[] = $manipulation;
-//        $manipulation->setVisits($this);
         return $this;
     }
 
