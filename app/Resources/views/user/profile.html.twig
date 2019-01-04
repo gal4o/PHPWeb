@@ -49,7 +49,9 @@
                     <th>Treatments</th>
                     <th>note</th>
                     <th>Patient</th>
+                    {% if app.user.isDentist() or app.user.isAdmin() or app.user.isReceptionist() %}
                     <th>Patient profile</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 {% for manipulation in visits %}
@@ -59,7 +61,9 @@
                         <td>{{ manipulation.Manipulations|join(",") }}</td>
                         <td>{{ manipulation.note }}</td>
                         <td>{{ manipulation.patient.FullName }}</td>
+                        {% if app.user.isDentist() or app.user.isAdmin() or app.user.isReceptionist() %}
                         <td><a href="{{ path('patient_profile', {'id':manipulation.patient.id}) }}">Patient profile</a></td>
+                        {% endif %}
                     </tr>
                 {% else %}
                     <p>

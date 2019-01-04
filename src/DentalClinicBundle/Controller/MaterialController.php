@@ -83,6 +83,7 @@ class MaterialController extends Controller
             ->find($id);
 
         if ($material === null) {
+            $this->addFlash('info', "This material does not exist.");
             return $this->redirectToRoute('material_index');
         }
 
@@ -122,6 +123,7 @@ class MaterialController extends Controller
             ->find($id);
 
         if ($material === null) {
+            $this->addFlash('info', "This material does not exist.");
             return $this->redirectToRoute('material_index');
         }
 

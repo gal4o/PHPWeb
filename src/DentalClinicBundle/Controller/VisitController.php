@@ -91,6 +91,7 @@ class VisitController extends Controller
         $patient = $visit->getPatient();
 
         if ($visit === null) {
+            $this->addFlash('info', "This visit does not exist.");
             return $this->redirectToRoute('patient_profile',
                 array(['id' => $patient->getId()]));
         }

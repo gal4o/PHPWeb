@@ -19,10 +19,15 @@ class DefaultController extends Controller
             $filter = $_POST['filter'];
             $branch = $this->getDoctrine()
                 ->getRepository(ClinicBranch::class)
-                ->findOneBy(['name' => $filter]);
-            $users = $this->getDoctrine()
-                ->getRepository(User::class)
-                ->findBy(['clinic' => $branch->getId(), 'role' => '1'],['fullName' => 'ASC']);
+                ->findBy(['name' => $filter]);
+            $users = [];
+            foreach ($branch as $bran) {
+                $branchUsers = $this->getDoctrine()
+                    ->getRepository(User::class)
+                    ->findBy(['clinic' => $bran->getId(), 'role' => '1'],
+                        ['fullName' => 'ASC']);
+                $users = $branchUsers;
+            }
         } else {
             $users = $this->getDoctrine()
                 ->getRepository(User::class)
@@ -31,7 +36,6 @@ class DefaultController extends Controller
                 ->getRepository(ClinicBranch::class)
                 ->findAll();
         }
-
         return $this->render('default/index.html.twig',
             ['users' => $users, 'branch' => $branch]);
     }

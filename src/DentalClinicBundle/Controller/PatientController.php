@@ -52,6 +52,12 @@ class PatientController extends Controller
      */
     public function createPatientAction(Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isReceptionist()&&!$currentUser->isDentist())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
         $patient = new Patient();
         $form = $this->createForm(PatientType::class, $patient);
         $form->handleRequest($request);
@@ -90,7 +96,7 @@ class PatientController extends Controller
     public function viewPatientAction($id)
     {
         $currentUser = $this->getUser();
-        if (!$currentUser->isAdmin()&&!$currentUser->isDentist())
+        if (!$currentUser->isAdmin()&&!$currentUser->isDentist()&&!$currentUser->isReceptionist())
         {
             $this->addFlash('info', "Access denied");
             return $this->redirectToRoute("homepage");
@@ -114,11 +120,18 @@ class PatientController extends Controller
      */
     public function editPatientAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isDentist()&&!$currentUser->isReceptionist())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
         $patient = $this->getDoctrine()
             ->getRepository(Patient::class)
             ->find($id);
 
         if ($patient === null) {
+            $this->addFlash('info', "This patient does not exist.");
             return $this->redirectToRoute('patient_index');
         }
 
@@ -159,10 +172,17 @@ class PatientController extends Controller
      */
     public function deletePatientAction($id, Request $request)
     {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isDentist()&&!$currentUser->isReceptionist())
+        {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
         $patient = $this->getDoctrine()
             ->getRepository(Patient::class)
             ->find($id);
         if ($patient === null) {
+            $this->addFlash('info', "This patient does not exist.");
             return $this->redirectToRoute('patient_index');
         }
 

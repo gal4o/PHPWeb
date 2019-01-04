@@ -28,7 +28,7 @@
                     </div>
 
                 {% else %}
-                    <h1>See where to find us:</h1>
+                    <p>Our clinics:</p>
                     <div class="col-md-6">
                         <form action="" method="post">
                             <select name="filter">
@@ -41,7 +41,9 @@
                             <br>
                         </form>
                     </div>
+
                     <div class="col-lg-6" >
+                        <h1>Where to find us:</h1>
                         {% for clone in branch %}
                         {{ clone.name }} :
                         City: {{ clone.city }},

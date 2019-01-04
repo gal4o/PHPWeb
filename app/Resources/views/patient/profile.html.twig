@@ -64,8 +64,10 @@
 
     <footer>
     <a class="btn btn-default btn-xs" href="{{ path('patient_index') }}">Home</a>
-    <a class="btn btn-success btn-xs" href="{{ path('patient_edit',{'id':patient.id}) }}">Edit</a>
+        {% if app.user.isDentist() or app.user.isReceptionist() %}
+        <a class="btn btn-success btn-xs" href="{{ path('patient_edit',{'id':patient.id}) }}">Edit</a>
     <a class="btn btn-danger btn-xs" href="{{ path('patient_delete',{'id':patient.id}) }}">Delete</a>
+        {% endif %}
     </footer>
 
     </div>
