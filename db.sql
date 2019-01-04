@@ -4,6 +4,8 @@ INSERT INTO `dentalclinic`.`roles` (`name`) VALUES ('Dentist');
 INSERT INTO `dentalclinic`.`roles` (`name`) VALUES ('Admin');
 INSERT INTO `dentalclinic`.`roles` (`name`) VALUES ('Hr');
 INSERT INTO `dentalclinic`.`roles` (`name`) VALUES ('Financier');
+INSERT INTO `dentalclinic`.`roles` (`name`) VALUES ('Receptionist');
+
 INSERT INTO `dentalclinic`.`clinic_branches` (`name`, `city`, `address`, `phone`) VALUES ('Central', 'Varna', 'gen. Gurko ', '0888999777');
 INSERT INTO `dentalclinic`.`clinic_branches` (`name`, `city`, `address`, `phone`) VALUES ('Burgas', 'Burgas', 'Slaveikov 14', '0888666777');
 INSERT INTO `dentalclinic`.`users` (`username`, `password`, `fullName`, `roleId`, `branchId`) VALUES ('boss', '$2y$13$tTXNXn10OR6zhlevJu63mOuBSiXOT3nPI1leeZcLzKafQnl1jbKaa', 'Pesho Adm', '2', '1');

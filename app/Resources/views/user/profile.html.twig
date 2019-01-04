@@ -11,13 +11,10 @@
                 <h1>It is {{ user.fullName }} profile! </h1>
             </header>
         </div>
-        <div class="col-md-6">
+        <div  class="col-md-6">
             <h3>Earnings:{{ sum }}</h3>
+            <h3> Branch: {{ user.clinic.name }}</h3>
         </div>
-    </div>
-    <div class="col-md-6">
-        <h3> Branch: {{ user.clinic.name }}</h3>
-    </div>
             <div class="col-md-6">
                 {% if user.photo!=null %}
                     <img src="{{ asset('uploads/users/' ~ user.photo) }}" width="300" height="200">
@@ -28,12 +25,11 @@
     <br>
     <hr>
     {% if user.id == app.user.id %}
-            <div class="col-md-2">
-            <a href="{{ path('order_create') }}">Create Order</a>
+            <div class="col-md-4">
+                <a class="btn-success" href="{{ path('order_create') }}">Create Order</a>
+                <a class="btn-success" href="{{ path('order_view_my', {id:user.id}) }}">View My Orders</a>
             </div>
-            <div class="col-md-2">
-                <a href="{{ path('order_view_my', {id:user.id}) }}">View My Orders</a>
-            </div>
+
     {% endif %}
             <hr>
     <div class="col-md-12">
@@ -41,7 +37,7 @@
                 View visits
                 From: &nbsp;<input type="date" name="start">  &nbsp;&nbsp;
                 To: &nbsp; <input type="date" name="end">&nbsp;&nbsp;
-                <input type="submit">
+                <input type="submit"><br>
             </form>
         </div>
 <hr>

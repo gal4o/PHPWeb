@@ -308,5 +308,14 @@ class User implements UserInterface
             return true;
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function isReceptionist() {
+        if ($this->getRole()->getName() === "Receptionist") {
+            return true;
+        }
+    }
 }
 

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 {% if app.user.isAdmin() or app.user.isHr() %}
-                <a href="{{ path('user_register') }}">Create new user</a><br><br>
+                <a class="btn-success" href="{{ path('user_register') }}">Create new user</a><br><br>
                {% endif %}
                 <hr>
 
@@ -15,7 +15,7 @@
                         <th>Full name</th>
                         <th>Role</th>
                         <th>Clinic Branch</th>
-                        {% if app.user.isAdmin() or app.user.isMoney() %}
+                        {% if app.user.isAdmin() or app.user.isFinancier() %}
                             <th>Profile</th>
                         {% endif %}
                         {% if app.user.isAdmin() or app.user.isHr() %}
@@ -28,7 +28,7 @@
                             <td>{{ oneUser.fullName }}</td>
                             <td>{{ oneUser.getRole.getName }}</td>
                             <td>{{ oneUser.getClinic.getName }}</td>
-                            {% if app.user.isAdmin() or app.user.isMoney() %}
+                            {% if app.user.isAdmin() or app.user.isFinancier() %}
                             <td><a class="btn btn-default btn-xs" href="{{ path('user_profile',{'id':oneUser.id}) }}">View</a></td>
                             {% endif %}
                             {% if app.user.isAdmin() or app.user.isHr() %}

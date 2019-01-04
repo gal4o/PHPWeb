@@ -31,28 +31,30 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="{{ path( 'tariff_index') }}">
-                                View Tariffs
+                                Tariffs
                             </a>
                         </li>
                         {% if app.user %}
+                            {% if app.user.isAdmin() or app.user.isFinancier() %}
                             <li>
                                 <a href="{{ path( 'order_view') }}">
-                                    View Orders
+                                    Orders
                                 </a>
                             </li>
+                            {% endif %}
                             <li>
                                 <a href="{{ path( 'material_index') }}">
-                                    View Materials
+                                    Materials
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ path( 'patient_index') }}">
-                                    View Patients
+                                    Patients
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ path( 'user_index') }}">
-                                    View Users
+                                    Users
                                 </a>
                             </li>
                             <li>

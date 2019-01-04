@@ -4,8 +4,8 @@
     <div class="container body-content">
         <div class="row">
             <div class="col-md-12">
-                {% if app.user and (app.user.isAdmin() or app.user.isMoney()) %}
-                    <a href="{{ path('material_create') }}">Create new material</a><br><br>
+                {% if app.user and (app.user.isAdmin() or app.user.isFinancier()) %}
+                    <a class="btn-success" href="{{ path('material_create') }}">Create new material</a><br><br>
                 {% endif %}
 
                 <table class="table table-bordered">
@@ -14,7 +14,7 @@
                         <th>Material</th>
                         <th>Price</th>
                         <th>Supplier</th>
-                        {% if app.user and (app.user.isAdmin() or app.user.isMoney()) %}
+                        {% if app.user and (app.user.isAdmin() or app.user.isFinancier()) %}
                             <th colspan="2">Functions</th>
                         {% endif %}
                     </tr>
@@ -24,7 +24,7 @@
                             <td>{{ material.name }}</td>
                             <td>{{ material.price }}</td>
                             <td>{{ material.supplier }}</td>
-                            {% if app.user and(app.user.isAdmin() or app.user.isMoney()) %}
+                            {% if app.user and(app.user.isAdmin() or app.user.isFinancier()) %}
                                 <td><a class="btn btn-success btn-xs" href="{{ path('material_edit',{'id':material.id}) }}">Edit</a></td>
                                 <td><a class="btn btn-danger btn-xs" href="{{ path('material_delete',{'id':material.id}) }}">Delete</a></td>
                             {% endif %}

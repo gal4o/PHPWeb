@@ -18,7 +18,6 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('v')
             ->where('v.dentist = :dentist')
             ->andWhere('v.date BETWEEN :start AND :end')
-//            ->andWhere('v.date < :end')
             ->setParameter('dentist',$user)
             ->setParameter('start', $start->format('Y-m-d'))
             ->setParameter('end', $end->format('Y-m-d'))

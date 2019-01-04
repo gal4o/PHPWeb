@@ -28,8 +28,29 @@
                     </div>
 
                 {% else %}
-
-                    <h1>Good morning! For your health care our team:</h1>
+                    <h1>See where to find us:</h1>
+                    <div class="col-md-6">
+                        <form action="" method="post">
+                            <select name="filter">
+                                <option></option>
+                                {% for clone in branch %}
+                                    <option>{{ clone.name }}</option>
+                                {% endfor %} }}
+                            </select>
+                            <button type="submit" class="btn btn-default">search</button>
+                            <br>
+                        </form>
+                    </div>
+                    <div class="col-lg-6" >
+                        {% for clone in branch %}
+                        {{ clone.name }} :
+                        City: {{ clone.city }},
+                        Address: {{ clone.address }},
+                        Phone: {{ clone.phone }}
+                            <br>
+                        {% endfor %}
+                    </div>
+                    <h1>Welcome! For your health care our team:</h1>
                     <hr>
                     <table class="table table-bordered">
                         <thead>

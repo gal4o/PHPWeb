@@ -25,7 +25,7 @@
             {% endif %}
         </div>
         {% if app.user.isDentist() %}
-        <td><a class="btn btn-default btn-xs" href="{{ path('visit_create',{'id':patient.id}) }}">Add visit</a></td>
+        <td><a class="btn-success" href="{{ path('visit_create',{'id':patient.id}) }}">Add visit</a></td>
         {% endif %}
 
         <div class="col-md-12">

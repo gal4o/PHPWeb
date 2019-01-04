@@ -2,6 +2,8 @@
 
 namespace DentalClinicBundle\Repository;
 
+use DentalClinicBundle\Entity\ClinicBranch;
+
 /**
  * ClinicBranchRepository
  *
@@ -10,4 +12,14 @@ namespace DentalClinicBundle\Repository;
  */
 class ClinicBranchRepository extends \Doctrine\ORM\EntityRepository
 {
+//    public function getBranch(ClinicBranch $branch) {
+//
+//        $query = $this->createQueryBuilder('b')
+//            ->where('b.name = :branch')
+//            ->setParameter('branch',$branch)
+//            ->getQuery()
+//            ->getResult();
+//
+//        return $query;
+//    }
 }
