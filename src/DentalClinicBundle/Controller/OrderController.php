@@ -85,8 +85,9 @@ class OrderController extends Controller
                 $needMaterials[$order->getMaterial()->getName()] = $order->getQuantity();
             }
         }
-        return $this->render('order/view.html.twig',
-            ['orders' => $orders, 'needMaterials' => $needMaterials]);
+        return $this->render('order/view.html.twig', [
+            'orders' => $orders,
+                'needMaterials' => $needMaterials]);
     }
 
     /**
@@ -108,6 +109,98 @@ class OrderController extends Controller
             ->findBy(['dentist' => $id]);
         return $this->render('order/viewMy.html.twig', ['orders' => $orders]);
     }
+
+    /**
+     * @Route("/order/processing/{id}", name="order_processing")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function processingOrderAction($id)
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin() && !$currentUser->isFinancier()) {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
+        $order = $this->getDoctrine()
+            ->getRepository(Order::class)
+            ->find($id);
+
+        if ($order === null) {
+            $this->addFlash('info', "This order does not exist.");
+            return $this->redirectToRoute('order_view');
+        }
+
+        $order->setStatus('processing');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($order);
+        $em->flush();
+        return $this->redirectToRoute('order_view');
+    }
+
+    /**
+     * @Route("/order/ready/{id}", name="order_ready")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function readyOrderAction($id)
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin() && !$currentUser->isFinancier()) {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
+        $order = $this->getDoctrine()
+            ->getRepository(Order::class)
+            ->find($id);
+
+        if ($order === null) {
+            $this->addFlash('info', "This order does not exist.");
+            return $this->redirectToRoute('order_view');
+        }
+
+        $order->setStatus('ready');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($order);
+        $em->flush();
+        return $this->redirectToRoute('order_view');
+    }
+
+
+    /**
+     * @Route("/order/denied/{id}", name="order_denied")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function deniedOrderAction($id)
+    {
+        $currentUser = $this->getUser();
+        if (!$currentUser->isAdmin() && !$currentUser->isFinancier()) {
+            $this->addFlash('info', "Access denied");
+            return $this->redirectToRoute("homepage");
+        }
+
+        $order = $this->getDoctrine()
+            ->getRepository(Order::class)
+            ->find($id);
+
+        if ($order === null) {
+            $this->addFlash('info', "This order does not exist.");
+            return $this->redirectToRoute('order_view');
+        }
+
+        $order->setStatus('denied');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($order);
+        $em->flush();
+        return $this->redirectToRoute('order_view');
+    }
+
 
     /**
      * @Route("/order/edit/{id}", name="order_edit")
@@ -139,16 +232,13 @@ class OrderController extends Controller
 
         if ($form->isSubmitted()&&$form->isValid())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($order);
-            $em->flush();
-            return $this->redirectToRoute('order_view',
-                array('id' => $order->getId()));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($order);
+        $em->flush();
+        return $this->redirectToRoute('order_view');
         }
 
         return $this->render('order/edit.html.twig',
             ['order' => $order, 'form' => $form->createView()]);
     }
-
-
 }

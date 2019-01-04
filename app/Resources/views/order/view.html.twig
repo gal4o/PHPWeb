@@ -42,7 +42,6 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -51,7 +50,7 @@
                         <th>User</th>
                         <th>Supplier</th>
                         <th>Status</th>
-                        <th colspan="2">Functions</th>
+                        <th colspan="3">Functions</th>
                     </tr>
                     </thead>
                     {% for order in orders %}
@@ -61,7 +60,9 @@
                             <td>{{ order.dentist.fullName }}</td>
                             <td>{{ order.material.supplier }}</td>
                             <td>{{ order.status }}</td>
-                            <td><a class="btn btn-success btn-xs" href="{{ path('order_edit',{'id':order.id}) }}">Edit</a></td>
+                            <td><a class="btn btn-success btn-xs" href="{{ path('order_processing',{'id':order.id, 'needMaterials':needMaterials}) }}">Processing</a></td>
+                            <td><a class="btn btn-success btn-xs" href="{{ path('order_ready',{'id':order.id}) }}">Ready</a></td>
+                            <td><a class="btn btn-success btn-xs" href="{{ path('order_denied',{'id':order.id}) }}">Denied</a></td>
                         </tr>
                     {% endfor %}
                 </table>

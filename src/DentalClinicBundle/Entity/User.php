@@ -59,14 +59,12 @@ class User implements UserInterface
     private $visits;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="DentalClinicBundle\Entity\Role", inversedBy="users")
      * @ORM\JoinColumn(name="roleId", referencedColumnName="id")
      */
     private $role;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="DentalClinicBundle\Entity\ClinicBranch", inversedBy="users")
      * @ORM\JoinColumn(name="branchId", referencedColumnName="id")
      */

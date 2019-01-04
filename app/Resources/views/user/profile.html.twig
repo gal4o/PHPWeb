@@ -44,7 +44,6 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>No</th>
                     <th>Date</th>
                     <th>Treatments</th>
                     <th>note</th>
@@ -56,7 +55,6 @@
                 </thead>
                 {% for manipulation in visits %}
                     <tr>
-                        <td>{{ manipulation.id }}</td>
                         <td>{{ manipulation.date|date("d.m.Y g:ia") }}</td>
                         <td>{{ manipulation.Manipulations|join(",") }}</td>
                         <td>{{ manipulation.note }}</td>
